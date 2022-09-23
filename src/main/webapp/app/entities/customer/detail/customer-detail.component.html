@@ -1,0 +1,76 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="customer">
+      <h2 data-cy="customerDetailsHeading"><span jhiTranslate="filterreactiveApp.customer.detail.title">Customer</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ customer.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="filterreactiveApp.customer.name">Name</span></dt>
+        <dd>
+          <span>{{ customer.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="filterreactiveApp.customer.age">Age</span></dt>
+        <dd>
+          <span>{{ customer.age }}</span>
+        </dd>
+        <dt><span jhiTranslate="filterreactiveApp.customer.distanceTravelled">Distance Travelled</span></dt>
+        <dd>
+          <span>{{ customer.distanceTravelled }}</span>
+        </dd>
+        <dt><span jhiTranslate="filterreactiveApp.customer.amountSpent">Amount Spent</span></dt>
+        <dd>
+          <span>{{ customer.amountSpent }}</span>
+        </dd>
+        <dt><span jhiTranslate="filterreactiveApp.customer.amountSaved">Amount Saved</span></dt>
+        <dd>
+          <span>{{ customer.amountSaved }}</span>
+        </dd>
+        <dt><span jhiTranslate="filterreactiveApp.customer.amountEarned">Amount Earned</span></dt>
+        <dd>
+          <span>{{ customer.amountEarned }}</span>
+        </dd>
+        <dt><span jhiTranslate="filterreactiveApp.customer.happyPerson">Happy Person</span></dt>
+        <dd>
+          <span>{{ customer.happyPerson }}</span>
+        </dd>
+        <dt><span jhiTranslate="filterreactiveApp.customer.dob">Dob</span></dt>
+        <dd>
+          <span>{{ customer.dob | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="filterreactiveApp.customer.createdDate">Created Date</span></dt>
+        <dd>
+          <span>{{ customer.createdDate | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="filterreactiveApp.customer.travelDate">Travel Date</span></dt>
+        <dd>
+          <span>{{ customer.travelDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="filterreactiveApp.customer.travelTime">Travel Time</span></dt>
+        <dd>
+          <span>{{ customer.travelTime | duration }} ({{ customer.travelTime }})</span>
+        </dd>
+        <dt><span jhiTranslate="filterreactiveApp.customer.customerType">Customer Type</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'filterreactiveApp.CustomerType.' + customer.customerType }}">{{ customer.customerType }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/customer', customer.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+{
+  "filterreactiveApp": {
+    "CustomerType": {
+      "null": "",
+      "MVP": "MVP",
+      "VP": "VP"
+    }
+  }
+}

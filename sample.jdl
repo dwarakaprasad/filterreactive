@@ -1,0 +1,47 @@
+application {
+  config {
+    baseName filterreactive,
+    applicationType gateway,
+    packageName com.poc.filter,
+    authenticationType jwt,
+    prodDatabaseType postgresql,
+    clientFramework angular
+    devDatabaseType h2Disk
+    testFrameworks [cypress]
+    serviceDiscoveryType no
+  }
+  entities *
+}
+
+entity Customer {
+	name String
+    age Integer
+    distanceTravelled Long
+    amountSpent BigDecimal
+    amountSaved Float
+    amountEarned Double
+    happyPerson Boolean
+    dob Instant
+    createdDate LocalDate
+    travelDate ZonedDateTime
+    travelTime Duration
+    customerType CustomerType
+}
+
+enum CustomerType {
+	MVP, VP
+}
+
+entity Address {
+	street String
+    city String
+    state String
+    zip Long
+}
+
+relationship OneToMany {
+	Customer to Address
+}
+
+service all with serviceClass
+filter Customer, Address

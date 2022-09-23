@@ -1,0 +1,165 @@
+<div>
+  <h2 id="page-heading" data-cy="CustomerHeading">
+    <span jhiTranslate="filterreactiveApp.customer.home.title">Customers</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="filterreactiveApp.customer.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-customer"
+        [routerLink]="['/customer/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="filterreactiveApp.customer.home.createLabel"> Create a new Customer </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="customers?.length === 0">
+    <span jhiTranslate="filterreactiveApp.customer.home.notFound">No Customers found</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="customers && customers.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="name">
+            <div class="d-flex">
+              <span jhiTranslate="filterreactiveApp.customer.name">Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="age">
+            <div class="d-flex">
+              <span jhiTranslate="filterreactiveApp.customer.age">Age</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="distanceTravelled">
+            <div class="d-flex">
+              <span jhiTranslate="filterreactiveApp.customer.distanceTravelled">Distance Travelled</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="amountSpent">
+            <div class="d-flex">
+              <span jhiTranslate="filterreactiveApp.customer.amountSpent">Amount Spent</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="amountSaved">
+            <div class="d-flex">
+              <span jhiTranslate="filterreactiveApp.customer.amountSaved">Amount Saved</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="amountEarned">
+            <div class="d-flex">
+              <span jhiTranslate="filterreactiveApp.customer.amountEarned">Amount Earned</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="happyPerson">
+            <div class="d-flex">
+              <span jhiTranslate="filterreactiveApp.customer.happyPerson">Happy Person</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="dob">
+            <div class="d-flex">
+              <span jhiTranslate="filterreactiveApp.customer.dob">Dob</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="createdDate">
+            <div class="d-flex">
+              <span jhiTranslate="filterreactiveApp.customer.createdDate">Created Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="travelDate">
+            <div class="d-flex">
+              <span jhiTranslate="filterreactiveApp.customer.travelDate">Travel Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="travelTime">
+            <div class="d-flex">
+              <span jhiTranslate="filterreactiveApp.customer.travelTime">Travel Time</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="customerType">
+            <div class="d-flex">
+              <span jhiTranslate="filterreactiveApp.customer.customerType">Customer Type</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of customers; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/customer', customer.id, 'view']">{{ customer.id }}</a>
+          </td>
+          <td>{{ customer.name }}</td>
+          <td>{{ customer.age }}</td>
+          <td>{{ customer.distanceTravelled }}</td>
+          <td>{{ customer.amountSpent }}</td>
+          <td>{{ customer.amountSaved }}</td>
+          <td>{{ customer.amountEarned }}</td>
+          <td>{{ customer.happyPerson }}</td>
+          <td>{{ customer.dob | formatMediumDatetime }}</td>
+          <td>{{ customer.createdDate | formatMediumDate }}</td>
+          <td>{{ customer.travelDate | formatMediumDatetime }}</td>
+          <td title="{{ customer.travelTime }}">{{ customer.travelTime | duration }}</td>
+          <td jhiTranslate="{{ 'filterreactiveApp.CustomerType.' + customer.customerType }}">{{ customer.customerType }}</td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/customer', customer.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/customer', customer.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(customer)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

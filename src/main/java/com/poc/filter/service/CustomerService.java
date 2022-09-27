@@ -1,10 +1,15 @@
 package com.poc.filter.service;
 
 import com.poc.filter.domain.Customer;
+import com.poc.filter.domain.criteria.CustomerCriteria;
 import com.poc.filter.repository.CustomerRepository;
+import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.relational.core.query.Criteria;
+import org.springframework.data.relational.core.sql.Condition;
+import org.springframework.data.relational.core.sql.SQL;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -142,5 +147,10 @@ public class CustomerService {
     public Mono<Void> delete(Long id) {
         log.debug("Request to delete Customer : {}", id);
         return customerRepository.deleteById(id);
+    }
+
+    public Flux<Customer> findByCriteria(CustomerCriteria criteria) {
+        log.debug("Request to get Customer by criteria: {}", criteria);
+        return customerRepository.findByCriteria(criteria);
     }
 }

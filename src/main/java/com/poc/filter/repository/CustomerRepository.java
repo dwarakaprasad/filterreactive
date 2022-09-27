@@ -1,6 +1,7 @@
 package com.poc.filter.repository;
 
 import com.poc.filter.domain.Customer;
+import com.poc.filter.domain.criteria.CustomerCriteria;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.relational.core.query.Criteria;
@@ -36,7 +37,10 @@ interface CustomerRepositoryInternal {
     Flux<Customer> findAll();
 
     Mono<Customer> findById(Long id);
+
     // this is not supported at the moment because of https://github.com/jhipster/generator-jhipster/issues/18269
     // Flux<Customer> findAllBy(Pageable pageable, Criteria criteria);
 
+    // New Method to be added to template
+    public Flux<Customer> findByCriteria(CustomerCriteria criteria);
 }

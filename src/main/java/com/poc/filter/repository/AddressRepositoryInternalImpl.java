@@ -3,7 +3,11 @@ package com.poc.filter.repository;
 import static org.springframework.data.relational.core.query.Criteria.where;
 
 import com.poc.filter.domain.Address;
+import com.poc.filter.domain.Customer;
+import com.poc.filter.domain.criteria.AddressCriteria;
+import com.poc.filter.domain.criteria.CustomerCriteria;
 import com.poc.filter.repository.rowmapper.AddressRowMapper;
+import com.poc.filter.repository.rowmapper.ColumnConverter;
 import com.poc.filter.repository.rowmapper.CustomerRowMapper;
 import io.r2dbc.spi.Row;
 import io.r2dbc.spi.RowMetadata;
@@ -46,6 +50,8 @@ class AddressRepositoryInternalImpl extends SimpleR2dbcRepository<Address, Long>
 
     private final CustomerRowMapper customerMapper;
     private final AddressRowMapper addressMapper;
+    // Needed for converting values in the where clause
+    private final ColumnConverter columnConverter;
 
     private static final Table entityTable = Table.aliased("address", EntityManager.ENTITY_ALIAS);
     private static final Table customerTable = Table.aliased("customer", "customer");
@@ -56,7 +62,8 @@ class AddressRepositoryInternalImpl extends SimpleR2dbcRepository<Address, Long>
         CustomerRowMapper customerMapper,
         AddressRowMapper addressMapper,
         R2dbcEntityOperations entityOperations,
-        R2dbcConverter converter
+        R2dbcConverter converter,
+        ColumnConverter columnConverter
     ) {
         super(
             new MappingRelationalEntityInformation(converter.getMappingContext().getRequiredPersistentEntity(Address.class)),
@@ -68,6 +75,7 @@ class AddressRepositoryInternalImpl extends SimpleR2dbcRepository<Address, Long>
         this.entityManager = entityManager;
         this.customerMapper = customerMapper;
         this.addressMapper = addressMapper;
+        this.columnConverter = columnConverter;
     }
 
     @Override
@@ -110,5 +118,38 @@ class AddressRepositoryInternalImpl extends SimpleR2dbcRepository<Address, Long>
     @Override
     public <S extends Address> Mono<S> save(S entity) {
         return super.save(entity);
+    }
+
+    // New Method implementation to be added to template
+    @Override
+    public Flux<Address> findByCriteria(AddressCriteria criteria) {
+        return createQuery(null, buildConditions(criteria)).all();
+    }
+
+    // No better way to get column names (nothing similar to JPA metamodel is available)
+    private Condition buildConditions(AddressCriteria criteria) {
+        ConditionBuilder builder = new ConditionBuilder(this.columnConverter);
+        List<Condition> allConditions = new ArrayList<Condition>();
+        if (criteria != null) {
+            if (criteria.getId() != null) {
+                builder.buildFilterConditionForField(criteria.getId(), entityTable.column("id"));
+            }
+            if (criteria.getStreet() != null) {
+                builder.buildFilterConditionForField(criteria.getStreet(), entityTable.column("street"));
+            }
+            if (criteria.getCity() != null) {
+                builder.buildFilterConditionForField(criteria.getCity(), entityTable.column("city"));
+            }
+            if (criteria.getState() != null) {
+                builder.buildFilterConditionForField(criteria.getState(), entityTable.column("state"));
+            }
+            if (criteria.getZip() != null) {
+                builder.buildFilterConditionForField(criteria.getZip(), entityTable.column("zip"));
+            }
+            if (criteria.getCustomerId() != null) {
+                builder.buildFilterConditionForField(criteria.getCustomerId(), customerTable.column("id"));
+            }
+        }
+        return builder.buildConditions();
     }
 }

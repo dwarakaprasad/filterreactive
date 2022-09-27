@@ -1,10 +1,11 @@
 package com.poc.filter.web.rest;
 
 import com.poc.filter.domain.Address;
+import com.poc.filter.domain.criteria.AddressCriteria;
 import com.poc.filter.repository.AddressRepository;
-import com.poc.filter.service.AddressQueryService;
+// Goes away
+// import com.poc.filter.service.AddressQueryService;
 import com.poc.filter.service.AddressService;
-import com.poc.filter.service.criteria.AddressCriteria;
 import com.poc.filter.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -42,12 +43,19 @@ public class AddressResource {
 
     private final AddressRepository addressRepository;
 
-    private final AddressQueryService addressQueryService;
+    // Goes away
+    // private final AddressQueryService addressQueryService;
 
-    public AddressResource(AddressService addressService, AddressRepository addressRepository, AddressQueryService addressQueryService) {
+    public AddressResource(
+        AddressService addressService,
+        AddressRepository addressRepository
+        // Goes away
+        // , AddressQueryService addressQueryService
+    ) {
         this.addressService = addressService;
         this.addressRepository = addressRepository;
-        this.addressQueryService = addressQueryService;
+        // Goes away
+        // this.addressQueryService = addressQueryService;
     }
 
     /**
@@ -170,10 +178,10 @@ public class AddressResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of addresses in body.
      */
     @GetMapping("/addresses")
-    public ResponseEntity<List<Address>> getAllAddresses(AddressCriteria criteria) {
+    public Flux<Address> getAllAddresses(AddressCriteria criteria) {
         log.debug("REST request to get Addresses by criteria: {}", criteria);
-        List<Address> entityList = addressQueryService.findByCriteria(criteria);
-        return ResponseEntity.ok().body(entityList);
+        return addressService.findByCriteria(criteria);
+        // return ResponseEntity.ok().body(entityList);
     }
 
     /**
@@ -182,12 +190,13 @@ public class AddressResource {
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
      */
+    /*
     @GetMapping("/addresses/count")
     public ResponseEntity<Long> countAddresses(AddressCriteria criteria) {
         log.debug("REST request to count Addresses by criteria: {}", criteria);
         return ResponseEntity.ok().body(addressQueryService.countByCriteria(criteria));
     }
-
+*/
     /**
      * {@code GET  /addresses} : get all the addresses as a stream.
      * @return the {@link Flux} of addresses.

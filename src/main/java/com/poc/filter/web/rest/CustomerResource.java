@@ -1,10 +1,11 @@
 package com.poc.filter.web.rest;
 
 import com.poc.filter.domain.Customer;
+import com.poc.filter.domain.criteria.CustomerCriteria;
 import com.poc.filter.repository.CustomerRepository;
-import com.poc.filter.service.CustomerQueryService;
+// Template will be modified
+//import com.poc.filter.service.CustomerQueryService;
 import com.poc.filter.service.CustomerService;
-import com.poc.filter.service.criteria.CustomerCriteria;
 import com.poc.filter.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -42,16 +43,20 @@ public class CustomerResource {
 
     private final CustomerRepository customerRepository;
 
-    private final CustomerQueryService customerQueryService;
+    // Template will be modified
+    // private final CustomerQueryService customerQueryService;
 
     public CustomerResource(
         CustomerService customerService,
-        CustomerRepository customerRepository,
-        CustomerQueryService customerQueryService
+        CustomerRepository customerRepository
+        // Template will be modified
+        // ,
+        // CustomerQueryService customerQueryService
     ) {
         this.customerService = customerService;
         this.customerRepository = customerRepository;
-        this.customerQueryService = customerQueryService;
+        // Template will be fied for this
+        // this.customerQueryService = customerQueryService;
     }
 
     /**
@@ -174,10 +179,15 @@ public class CustomerResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of customers in body.
      */
     @GetMapping("/customers")
-    public ResponseEntity<List<Customer>> getAllCustomers(CustomerCriteria criteria) {
+    // Template will be modified for reactive
+    // public ResponseEntity<List<Customer>> getAllCustomers(CustomerCriteria criteria) {
+    public Flux<Customer> getAllCustomers(CustomerCriteria criteria) {
         log.debug("REST request to get Customers by criteria: {}", criteria);
-        List<Customer> entityList = customerQueryService.findByCriteria(criteria);
-        return ResponseEntity.ok().body(entityList);
+        // Template will be modified
+        // List<Customer> entityList = customerQueryService.findByCriteria(criteria);
+        // return ResponseEntity.ok().body(entityList);
+        // When no criteria is present this will operate as findAll (hoping all test to pass)
+        return customerService.findByCriteria(criteria);
     }
 
     /**
@@ -186,12 +196,13 @@ public class CustomerResource {
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
      */
+    /* Next step to implement this
     @GetMapping("/customers/count")
     public ResponseEntity<Long> countCustomers(CustomerCriteria criteria) {
         log.debug("REST request to count Customers by criteria: {}", criteria);
         return ResponseEntity.ok().body(customerQueryService.countByCriteria(criteria));
     }
-
+*/
     /**
      * {@code GET  /customers} : get all the customers as a stream.
      * @return the {@link Flux} of customers.

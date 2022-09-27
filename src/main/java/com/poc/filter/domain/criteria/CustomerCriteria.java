@@ -1,4 +1,6 @@
-package com.poc.filter.service.criteria;
+// Need to move these files under domain package (from service) as there is no elegant
+// way convert from Filter<> to ...sql.query
+package com.poc.filter.domain.criteria;
 
 import com.poc.filter.domain.enumeration.CustomerType;
 import java.io.Serializable;
@@ -65,7 +67,9 @@ public class CustomerCriteria implements Serializable, Criteria {
 
     private CustomerTypeFilter customerType;
 
-    private LongFilter addressId;
+    // Does not support non owning side of the relationship
+    // To suuport this, the SelectFromAndJoin will have to be modified (may be as a next step??)
+    // private LongFilter addressId;
 
     private Boolean distinct;
 
@@ -85,7 +89,7 @@ public class CustomerCriteria implements Serializable, Criteria {
         this.travelDate = other.travelDate == null ? null : other.travelDate.copy();
         this.travelTime = other.travelTime == null ? null : other.travelTime.copy();
         this.customerType = other.customerType == null ? null : other.customerType.copy();
-        this.addressId = other.addressId == null ? null : other.addressId.copy();
+        // this.addressId = other.addressId == null ? null : other.addressId.copy();
         this.distinct = other.distinct;
     }
 
@@ -289,7 +293,7 @@ public class CustomerCriteria implements Serializable, Criteria {
         this.customerType = customerType;
     }
 
-    public LongFilter getAddressId() {
+    /*public LongFilter getAddressId() {
         return addressId;
     }
 
@@ -302,7 +306,7 @@ public class CustomerCriteria implements Serializable, Criteria {
 
     public void setAddressId(LongFilter addressId) {
         this.addressId = addressId;
-    }
+    }*/
 
     public Boolean getDistinct() {
         return distinct;
@@ -335,7 +339,7 @@ public class CustomerCriteria implements Serializable, Criteria {
             Objects.equals(travelDate, that.travelDate) &&
             Objects.equals(travelTime, that.travelTime) &&
             Objects.equals(customerType, that.customerType) &&
-            Objects.equals(addressId, that.addressId) &&
+            // Objects.equals(addressId, that.addressId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
@@ -356,7 +360,7 @@ public class CustomerCriteria implements Serializable, Criteria {
             travelDate,
             travelTime,
             customerType,
-            addressId,
+            // addressId,
             distinct
         );
     }
@@ -378,7 +382,7 @@ public class CustomerCriteria implements Serializable, Criteria {
             (travelDate != null ? "travelDate=" + travelDate + ", " : "") +
             (travelTime != null ? "travelTime=" + travelTime + ", " : "") +
             (customerType != null ? "customerType=" + customerType + ", " : "") +
-            (addressId != null ? "addressId=" + addressId + ", " : "") +
+            // (addressId != null ? "addressId=" + addressId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

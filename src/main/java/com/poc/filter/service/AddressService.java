@@ -1,6 +1,7 @@
 package com.poc.filter.service;
 
 import com.poc.filter.domain.Address;
+import com.poc.filter.domain.criteria.AddressCriteria;
 import com.poc.filter.repository.AddressRepository;
 import java.util.List;
 import org.slf4j.Logger;
@@ -118,5 +119,9 @@ public class AddressService {
     public Mono<Void> delete(Long id) {
         log.debug("Request to delete Address : {}", id);
         return addressRepository.deleteById(id);
+    }
+
+    public Flux<Address> findByCriteria(AddressCriteria criteria) {
+        return addressRepository.findByCriteria(criteria);
     }
 }

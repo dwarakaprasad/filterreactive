@@ -1,6 +1,7 @@
 package com.poc.filter.repository;
 
 import com.poc.filter.domain.Address;
+import com.poc.filter.domain.criteria.AddressCriteria;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.relational.core.query.Criteria;
@@ -45,4 +46,6 @@ interface AddressRepositoryInternal {
     // this is not supported at the moment because of https://github.com/jhipster/generator-jhipster/issues/18269
     // Flux<Address> findAllBy(Pageable pageable, Criteria criteria);
 
+    // New findByCriteria method
+    Flux<Address> findByCriteria(AddressCriteria criteria);
 }

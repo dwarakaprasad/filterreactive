@@ -1,4 +1,6 @@
-package com.poc.filter.service.criteria;
+// Need to move these files under domain package (from service) as there is no elegant
+// way convert from Filter<> to ...sql.query
+package com.poc.filter.domain.criteria;
 
 import java.io.Serializable;
 import java.util.Objects;
